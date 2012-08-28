@@ -20,5 +20,11 @@ public class ViewFactory {
 	public View getJsonView() {
 		return new JsonView(new JsonSerializer(), etagGenerator);
 	}
+	
+	public View getJsonView(int maxAge) {
+		final JsonView jsonView = new JsonView(new JsonSerializer(), etagGenerator);
+		jsonView.setMaxAge(maxAge);
+		return jsonView;
+	}
 
 }
