@@ -14,14 +14,20 @@ public class JsonView implements View {
 	private final JsonSerializer jsonSerializer;
 	private final EtagGenerator etagGenerator;
 	private Integer maxAge;
+	private String dataField;
 
 	public JsonView(JsonSerializer jsonSerializer, EtagGenerator etagGenerator) {
 		this.jsonSerializer = jsonSerializer;
 		this.etagGenerator = etagGenerator;
+		this.dataField = "data";
 	}
 	
 	public void setMaxAge(Integer maxAge) {
 		this.maxAge = maxAge;
+	}
+	
+	public void setDataField(String dataField) {
+		this.dataField = dataField;
 	}
 
 	@Override
@@ -35,7 +41,8 @@ public class JsonView implements View {
 		response.setContentType(getContentType());
     	response.setHeader("Cache-Control", "max-age=" + (maxAge != null ? maxAge : 0));		
 		
-		final String json = jsonSerializer.serialize(model.get("data"));
+		final String json = jsonSerializer.serialize(model.get(dataField));
+		System.out.println(json);
 		response.setHeader("Etag", etagGenerator.makeEtagFor(json));
 		
 		String callbackFunction = null;

@@ -14,6 +14,7 @@ public class JsonSerializer {
 	public JsonSerializer() {
 		mapper = new ObjectMapper();
 		mapper.configure(Feature.WRITE_NULL_PROPERTIES, false);
+		mapper.configure(Feature.FAIL_ON_EMPTY_BEANS, false);
 	}
 	
 	public String serialize(Object object) {		

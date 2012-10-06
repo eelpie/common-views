@@ -2,7 +2,6 @@ package uk.co.eelpieconsulting.common.views;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.View;
 
 import uk.co.eelpieconsulting.common.views.json.JsonSerializer;
 import uk.co.eelpieconsulting.common.views.json.JsonView;
@@ -18,22 +17,22 @@ public class ViewFactory {
 		this.etagGenerator = etagGenerator;
 	}
 
-	public View getJsonView() {
+	public JsonView getJsonView() {
 		return new JsonView(new JsonSerializer(), etagGenerator);
 	}
 	
-	public View getJsonView(int maxAge) {
+	public JsonView getJsonView(int maxAge) {
 		final JsonView view = new JsonView(new JsonSerializer(), etagGenerator);
 		view.setMaxAge(maxAge);
 		return view;
 	}
 	
-	public View getRssView(String title, String link, String description) {
+	public RssView getRssView(String title, String link, String description) {
 		final RssView view = new RssView(etagGenerator, title, link, description);
 		return view;
 	}
 	
-	public View getRssView(int maxAge, String title, String link, String description) {
+	public RssView getRssView(int maxAge, String title, String link, String description) {
 		final RssView view = new RssView(etagGenerator, title, link, description);
 		view.setMaxAge(maxAge);
 		return view;
