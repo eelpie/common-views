@@ -42,7 +42,6 @@ public class JsonView implements View {
     	response.setHeader("Cache-Control", "max-age=" + (maxAge != null ? maxAge : 0));		
 		
 		final String json = jsonSerializer.serialize(model.get(dataField));
-		System.out.println(json);
 		response.setHeader("Etag", etagGenerator.makeEtagFor(json));
 		
 		String callbackFunction = null;
