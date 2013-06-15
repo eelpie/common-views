@@ -31,10 +31,10 @@ public class RssView implements View {
 	
 	private Integer maxAge;
 	
-	public RssView(EtagGenerator etagGenerator, String link, String title, String description) {
+	public RssView(EtagGenerator etagGenerator, String title, String link, String description) {
 		this.etagGenerator = etagGenerator;
-		this.link = link;
 		this.title = title;
+		this.link = link;
 		this.description = description;
 	}
 	
@@ -61,12 +61,12 @@ public class RssView implements View {
 		return "text/xml";
 	}
 	
-	protected String renderRss(String title, String linkUrl, String description, List entries) {
+	protected String renderRss(String title, String link, String description, List entries) {
 		SyndFeed feed = new SyndFeedImpl();
 
 		feed.setTitle(title);
 		feed.setFeedType("rss_2.0");
-		feed.setLink(linkUrl);
+		feed.setLink(link);
 		feed.setDescription(description);
 		feed.setEncoding("UTF-8");
 		feed.setEntries(entries);
