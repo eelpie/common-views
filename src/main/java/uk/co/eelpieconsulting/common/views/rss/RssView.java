@@ -2,6 +2,8 @@ package uk.co.eelpieconsulting.common.views.rss;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,13 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
+
+import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
+import com.sun.syndication.feed.module.mediarss.types.MediaContent;
+import com.sun.syndication.feed.module.mediarss.types.Metadata;
+import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
+import com.sun.syndication.feed.module.mediarss.types.UrlReference;
+
 
 public class RssView implements View {
 
@@ -110,7 +119,31 @@ public class RssView implements View {
 	        entry.setDescription(description);
 		}
 		
+		final String imageUrl = item.getImageUrl();
+		if (imageUrl != null) {
+			populateMediaModule(entry, imageUrl);                       
+		}          
 		return entry;
+	}
+	
+	private void populateMediaModule(SyndEntryImpl entry, String thumbnailUrl) {
+		try {
+			MediaEntryModuleImpl media = new MediaEntryModuleImpl();
+			MediaContent[] contents = new MediaContent[1];
+			MediaContent item = new MediaContent(new UrlReference(thumbnailUrl));
+			item.setType("image/jpeg");
+			Metadata md = new Metadata();
+			Thumbnail[] thumbs = new Thumbnail[1];
+			thumbs[0] = new Thumbnail(new URL(thumbnailUrl));
+			md.setThumbnail(thumbs);
+			item.setMetadata(md);
+			contents[0] = item;
+			media.setMediaContents(contents);
+			entry.getModules().add(media);
+
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 }

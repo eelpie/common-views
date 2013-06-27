@@ -8,5 +8,6 @@ public interface RssFeedable {
 	public String getWebUrl();
 	public Date getDate();
 	public String getDescription();
+	public String getImageUrl();
 
 }
