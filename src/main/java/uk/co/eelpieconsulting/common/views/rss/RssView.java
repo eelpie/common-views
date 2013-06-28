@@ -13,8 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.View;
 
+import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.views.EtagGenerator;
 
+import com.sun.syndication.feed.module.georss.GeoRSSModule;
+import com.sun.syndication.feed.module.georss.W3CGeoModuleImpl;
+import com.sun.syndication.feed.module.georss.geometries.Position;
+import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
+import com.sun.syndication.feed.module.mediarss.types.MediaContent;
+import com.sun.syndication.feed.module.mediarss.types.Metadata;
+import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
+import com.sun.syndication.feed.module.mediarss.types.UrlReference;
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -23,13 +32,6 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.SyndFeedImpl;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
-
-import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
-import com.sun.syndication.feed.module.mediarss.types.MediaContent;
-import com.sun.syndication.feed.module.mediarss.types.Metadata;
-import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
-import com.sun.syndication.feed.module.mediarss.types.UrlReference;
-
 
 public class RssView implements View {
 
@@ -122,7 +124,11 @@ public class RssView implements View {
 		final String imageUrl = item.getImageUrl();
 		if (imageUrl != null) {
 			populateMediaModule(entry, imageUrl);                       
-		}          
+		}
+		
+		if (item.getLatLong() != null) {
+			populateGeoRSSModule(entry, item.getLatLong());
+		}
 		return entry;
 	}
 	
@@ -145,5 +151,11 @@ public class RssView implements View {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	 private void populateGeoRSSModule(SyndEntryImpl entry, final LatLong latLong) {
+         final GeoRSSModule geoRSSModule = new W3CGeoModuleImpl();
+         geoRSSModule.setPosition(new Position(latLong.getLatitude(), latLong.getLongitude()));         
+         entry.getModules().add(geoRSSModule);
+	 }
 	
 }
