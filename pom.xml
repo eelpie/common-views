@@ -5,7 +5,7 @@
 	<artifactId>common-views</artifactId>
 	<packaging>jar</packaging>
 	<name>common-views</name>
-	<version>1.0.5</version>
+	<version>1.0.7</version>
 	<description>Common JSON and RSS spring views</description>
 
 	<properties>
@@ -47,8 +47,8 @@
 	<dependencies>		
 		<dependency>
 			<groupId>uk.co.eelpieconsulting.common</groupId>
-			<artifactId>common-geo</artifactId>
-			<version>1.0.2</version>
+			<artifactId>common-geo-model</artifactId>
+			<version>1.0.1</version>
 		</dependency>
 		
 		<dependency>
