@@ -81,7 +81,7 @@ public class RssView implements View {
 		feed.setDescription(description);
 		feed.setEncoding("UTF-8");
 		feed.setEntries(entries);
-
+		
 		StringWriter writer = new StringWriter();
 		SyndFeedOutput output = new SyndFeedOutput();
 
@@ -112,6 +112,10 @@ public class RssView implements View {
 		entry.setTitle(item.getHeadline());
 		entry.setLink(item.getWebUrl());
 		entry.setPublishedDate(item.getDate());
+		
+		if (item.getAuthor() != null) {
+			entry.setAuthor(item.getAuthor());
+		}
 		
 		final String bodyText = item.getDescription();
 		if (bodyText != null) {
