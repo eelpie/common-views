@@ -1,11 +1,8 @@
 package  uk.co.eelpieconsulting.common.views.json;
 
-import java.io.IOException;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig.Feature;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class JsonSerializer {
 	
@@ -13,24 +10,16 @@ public class JsonSerializer {
 	
 	public JsonSerializer() {
 		mapper = new ObjectMapper();
-		mapper.configure(Feature.WRITE_NULL_PROPERTIES, false);
-		mapper.configure(Feature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
 	}
 	
-	public String serialize(Object object) {		
+	public String serialize(Object object) {
 		try {
 			return mapper.writeValueAsString(object);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (JsonProcessingException e) {			
+			throw new RuntimeException(e);
 		}
-		return null;
 	}
 	
 }
