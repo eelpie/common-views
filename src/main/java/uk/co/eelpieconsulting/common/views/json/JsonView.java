@@ -39,8 +39,9 @@ public class JsonView implements View {
 	public void render(Map model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType(getContentType());
-    	response.setHeader("Cache-Control", "max-age=" + (maxAge != null ? maxAge : 0));		
-		
+		if (maxAge != null) {			
+			response.setHeader("Cache-Control", "max-age=" + maxAge);		
+		}
 		final String json = jsonSerializer.serialize(model.get(dataField));
 		response.setHeader("Etag", etagGenerator.makeEtagFor(json));
 		
