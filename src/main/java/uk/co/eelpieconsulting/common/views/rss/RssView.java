@@ -1,37 +1,29 @@
 package uk.co.eelpieconsulting.common.views.rss;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.rometools.modules.georss.GeoRSSModule;
+import com.rometools.modules.georss.W3CGeoModuleImpl;
+import com.rometools.modules.georss.geometries.Position;
+import com.rometools.modules.mediarss.MediaEntryModuleImpl;
+import com.rometools.modules.mediarss.types.MediaContent;
+import com.rometools.modules.mediarss.types.Metadata;
+import com.rometools.modules.mediarss.types.Thumbnail;
+import com.rometools.modules.mediarss.types.UrlReference;
+import com.rometools.rome.feed.synd.*;
+import com.rometools.rome.io.FeedException;
+import com.rometools.rome.io.SyndFeedOutput;
 import org.springframework.web.servlet.View;
-
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.views.EtagGenerator;
 
-import com.sun.syndication.feed.module.georss.GeoRSSModule;
-import com.sun.syndication.feed.module.georss.W3CGeoModuleImpl;
-import com.sun.syndication.feed.module.georss.geometries.Position;
-import com.sun.syndication.feed.module.mediarss.MediaEntryModuleImpl;
-import com.sun.syndication.feed.module.mediarss.types.MediaContent;
-import com.sun.syndication.feed.module.mediarss.types.Metadata;
-import com.sun.syndication.feed.module.mediarss.types.Thumbnail;
-import com.sun.syndication.feed.module.mediarss.types.UrlReference;
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndContentImpl;
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.feed.synd.SyndFeedImpl;
-import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedOutput;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class RssView implements View {
 
@@ -131,7 +123,7 @@ public class RssView implements View {
 		}
 		
 		if (item.getLatLong() != null) {
-			populateGeoRSSModule(entry, item.getLatLong());
+			populateGeoRSSModule(entry, item.getLatLong(), item.getFeatureName());
 		}
 		return entry;
 	}
@@ -144,21 +136,25 @@ public class RssView implements View {
 			item.setType("image/jpeg");
 			Metadata md = new Metadata();
 			Thumbnail[] thumbs = new Thumbnail[1];
-			thumbs[0] = new Thumbnail(new URL(thumbnailUrl));
+			thumbs[0] = new Thumbnail(new URI(thumbnailUrl));
 			md.setThumbnail(thumbs);
 			item.setMetadata(md);
 			contents[0] = item;
 			media.setMediaContents(contents);
 			entry.getModules().add(media);
 
-		} catch (MalformedURLException e) {
+		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	 private void populateGeoRSSModule(SyndEntryImpl entry, final LatLong latLong) {
+	 private void populateGeoRSSModule(SyndEntryImpl entry, LatLong latLong, String featureName) {
          final GeoRSSModule geoRSSModule = new W3CGeoModuleImpl();
-         geoRSSModule.setPosition(new Position(latLong.getLatitude(), latLong.getLongitude()));         
+		 Position position = new Position(latLong.getLatitude(), latLong.getLongitude());
+		 geoRSSModule.setPosition(position);
+		 if (featureName != null) {
+			 geoRSSModule.setFeatureNameTag(featureName);
+		 }
          entry.getModules().add(geoRSSModule);
 	 }
 	

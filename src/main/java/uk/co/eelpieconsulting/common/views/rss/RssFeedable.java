@@ -12,6 +12,7 @@ public interface RssFeedable {
 	public String getDescription();
 	public String getImageUrl();
 	public LatLong getLatLong();
+	public String getFeatureName();
 	public String getAuthor();
-	
+
 }
