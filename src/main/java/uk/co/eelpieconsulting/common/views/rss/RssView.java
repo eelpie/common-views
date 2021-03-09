@@ -1,7 +1,7 @@
 package uk.co.eelpieconsulting.common.views.rss;
 
 import com.rometools.modules.georss.GeoRSSModule;
-import com.rometools.modules.georss.W3CGeoModuleImpl;
+import com.rometools.modules.georss.SimpleModuleImpl;
 import com.rometools.modules.georss.geometries.Position;
 import com.rometools.modules.mediarss.MediaEntryModuleImpl;
 import com.rometools.modules.mediarss.types.MediaContent;
@@ -52,7 +52,7 @@ public class RssView implements View {
     	response.setHeader("Cache-Control", "max-age=" + (maxAge != null ? maxAge : 0));		
     	
     	final List<RssFeedable> contentItems = (List<RssFeedable>) model.get("data");
-    	final String rssContent = renderRss(title, link, description, makeRssEntiresForContent(contentItems));
+    	final String rssContent = renderRss(makeRssEntiresForContent(contentItems));
 		response.setHeader("Etag", etagGenerator.makeEtagFor(rssContent));
 		
 		response.getWriter().print(rssContent);
@@ -63,8 +63,8 @@ public class RssView implements View {
 	public String getContentType() {
 		return "text/xml";
 	}
-	
-	protected String renderRss(String title, String link, String description, List entries) {
+
+	protected String renderRss(List entries) {
 		SyndFeed feed = new SyndFeedImpl();
 
 		feed.setTitle(title);
@@ -149,7 +149,7 @@ public class RssView implements View {
 	}
 	
 	 private void populateGeoRSSModule(SyndEntryImpl entry, LatLong latLong, String featureName) {
-         final GeoRSSModule geoRSSModule = new W3CGeoModuleImpl();
+         final GeoRSSModule geoRSSModule = new SimpleModuleImpl();
 		 Position position = new Position(latLong.getLatitude(), latLong.getLongitude());
 		 geoRSSModule.setPosition(position);
 		 if (featureName != null) {
