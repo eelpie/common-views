@@ -41,13 +41,14 @@ public class RssViewTest {
         final GeoRSSModule geoRSSModule = new SimpleModuleImpl();
         Position position = new Position(51.1, -0.3);
         geoRSSModule.setPosition(position);
-        geoRSSModule.setFeatureNameTag("Some where");
+        geoRSSModule.setFeatureNameTag("Somewhere");
         entry.getModules().add(geoRSSModule);
 
         String rendered = rssView.renderRss(Arrays.asList(entry));
 
         assertTrue(rendered.contains("<title>A feed</title>"));
         assertTrue(rendered.contains("<georss:point>51.1 -0.3</georss:point>"));
+        assertTrue(rendered.contains("<georss:featurename>Somewhere</georss:featurename>"));
     }
 
 }
