@@ -125,6 +125,16 @@ public class RssView implements View {
 		if (item.getLatLong() != null) {
 			populateGeoRSSModule(entry, item.getLatLong(), item.getFeatureName());
 		}
+
+		if (item.getCategories() != null) {
+			List<SyndCategory> categories = new ArrayList<>();
+			for(String category: item.getCategories()) {
+				SyndCategory syndCategory = new SyndCategoryImpl();
+				syndCategory.setName(category);
+				categories.add(syndCategory);
+			}
+			entry.setCategories(categories);
+		}
 		return entry;
 	}
 	

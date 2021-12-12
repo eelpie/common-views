@@ -1,6 +1,7 @@
 package uk.co.eelpieconsulting.common.views.rss;
 
 import java.util.Date;
+import java.util.List;
 
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
 
@@ -14,5 +15,6 @@ public interface RssFeedable {
 	public LatLong getLatLong();
 	public String getFeatureName();
 	public String getAuthor();
+	public List<String> getCategories();
 
 }
