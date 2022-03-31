@@ -10,7 +10,7 @@
     <description>Common JSON and RSS spring views</description>
 
     <properties>
-        <org.springframework.version>5.2.19.RELEASE</org.springframework.version>
+        <org.springframework.version>5.3.18</org.springframework.version>
         <jackson.version>2.12.5</jackson.version>
     </properties>
 
