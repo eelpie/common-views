@@ -1,13 +1,11 @@
 package uk.co.eelpieconsulting.common.views.json;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.View;
-
 import uk.co.eelpieconsulting.common.views.EtagGenerator;
+
+import java.util.Map;
 
 public class JsonView implements View {
 	

@@ -11,12 +11,12 @@ import com.rometools.modules.mediarss.types.UrlReference;
 import com.rometools.rome.feed.synd.*;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedOutput;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.View;
 import uk.co.eelpieconsulting.common.geo.model.LatLong;
 import uk.co.eelpieconsulting.common.views.EtagGenerator;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URI;
@@ -46,7 +46,7 @@ public class RssView implements View {
 	}
 	
 	@Override
-	public void render(Map model, HttpServletRequest request, HttpServletResponse response) throws Exception {        
+	public void render(Map model, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	response.setContentType("text/xml;charset=UTF-8");
     	response.setCharacterEncoding("UTF-8");
     	response.setHeader("Cache-Control", "max-age=" + (maxAge != null ? maxAge : 0));		
