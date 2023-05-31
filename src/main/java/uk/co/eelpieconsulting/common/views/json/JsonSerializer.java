@@ -6,12 +6,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class JsonSerializer {
 	
-	private ObjectMapper mapper;
-	
+	private final ObjectMapper mapper;
+
 	public JsonSerializer() {
 		mapper = new ObjectMapper();
         mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         mapper.configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
+	}
+
+	public JsonSerializer(ObjectMapper mapper) {
+		this.mapper = mapper;
 	}
 	
 	public String serialize(Object object) {
